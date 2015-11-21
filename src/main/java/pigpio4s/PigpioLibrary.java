@@ -28,7 +28,7 @@ interface PigpioLibrary
 	PigpioLibrary INSTANCE = (PigpioLibrary)Native.loadLibrary(PigpioLibrary.JNA_LIBRARY_NAME, PigpioLibrary.class);
 	int PI_CMD_PARSE = (int)48;
 	int PI_BAD_HPWM_DUTY = (int)-97;
-	int PIGPIO_VERSION = (int)37;
+	int PIGPIO_VERSION = (int)40;
 	int PI_TOO_MANY_OOL = (int)-68;
 	int PI_SCRIPT_INITING = (int)0;
 	int PI_CMD_JMP = (int)813;
@@ -48,11 +48,13 @@ interface PigpioLibrary
 	int PI_CMD_RL = (int)830;
 	int PI_PUD_OFF = (int)0;
 	int PI_SET = (int)1;
+	int PI_CFG_ALERT_FREQ = (int)4;
 	int PI_BAD_USER_GPIO = (int)-2;
 	int PI_NOT_SERVO_GPIO = (int)-93;
 	int PI_CHAIN_LOOP_CNT = (int)-113;
 	int PI_CLOCK_PCM = (int)1;
 	int PI_I2C_READ = (int)6;
+	int PI_DEFAULT_CFG_INTERNALS = (int)0;
 	int PI_CMD_SERVO = (int)8;
 	int PI_TIME_ABSOLUTE = (int)1;
 	int PI_CMD_DCR = (int)806;
@@ -108,8 +110,10 @@ interface PigpioLibrary
 	int PI_MIN_TIMER = (int)0;
 	int PI_MIN_SERVO_PULSEWIDTH = (int)500;
 	int PI_HPWM_ILLEGAL = (int)-100;
+	int PI_BAD_EDGE = (int)-122;
 	String PI_DEFAULT_SOCKET_ADDR_STR = (String)"127.0.0.1";
 	int PI_BAD_HCLK_PASS = (int)-99;
+	int PI_MAX_ACTIVE = (int)1000000;
 	int PI_DEFAULT_SOCKET_PORT = (int)8888;
 	int PI_NO_HANDLE = (int)-24;
 	int PI_DEFAULT_IF_FLAGS = (int)0;
@@ -142,9 +146,11 @@ interface PigpioLibrary
 	int PI_WAVE_BLOCKS = (int)4;
 	int PI_MIN_SOCKET_PORT = (int)1024;
 	String PI_I2C_COMBINED = (String)"/sys/module/i2c_bcm2708/parameters/combined";
+	int RISING_EDGE = (int)0;
 	int PI_BAD_SPI_CHANNEL = (int)-76;
 	int PI_CMD_X = (int)839;
 	int PI_I2C_WRITE_FAILED = (int)-82;
+	int PI_MAX_STEADY = (int)300000;
 	int PI_BAD_PARAM = (int)-81;
 	int PI_HW_PWM_RANGE = (int)1000000;
 	int PI_BAD_MICROS = (int)-13;
@@ -158,6 +164,7 @@ interface PigpioLibrary
 	int PI_CMD_I2CWW = (int)64;
 	int PI_NTFY_FLAGS_WDOG = (int)(1 << 5);
 	int PI_MAX_SERVO_PULSEWIDTH = (int)2500;
+	int PI_CFG_ILLEGAL_VAL = (int)(1 << 10);
 	int PI_CMD_I2CWS = (int)60;
 	int PI_NO_ALERT_FUNC = (int)-16;
 	int PI_CMD_I2CWQ = (int)58;
@@ -184,6 +191,7 @@ interface PigpioLibrary
 	int PI_BAD_PATHNAME = (int)-23;
 	int PI_SCRIPT_RUNNING = (int)2;
 	int PI_DEFAULT_DUTYCYCLE_RANGE = (int)255;
+	int PI_CFG_DBG_LEVEL = (int)0;
 	int PI_CMD_BC2 = (int)13;
 	int PI_CMD_BC1 = (int)12;
 	int PI_CMD_SLRI = (int)94;
@@ -199,6 +207,7 @@ interface PigpioLibrary
 	int PI_CMD_CF2 = (int)88;
 	int PI_CMD_CF1 = (int)87;
 	int PI_DEFAULT_BUFFER_MILLIS = (int)120;
+	int PI_CFG_STATS = (int)(1 << 9);
 	int PI_CMD_PROCR = (int)40;
 	int PI_CMD_PROCS = (int)41;
 	int PI_BAD_SMBUS_CMD = (int)-107;
@@ -207,6 +216,7 @@ interface PigpioLibrary
 	int PI_MIN_WAVE_HALFSTOPBITS = (int)2;
 	int PI_CMD_HWVER = (int)17;
 	int PI_BB_I2C_MAX_BAUD = (int)500000;
+	int PI_CMD_CGI = (int)95;
 	int PI_BB_SER_INVERT = (int)1;
 	int PI_CMD_PROCD = (int)39;
 	int PI_BAD_I2C_SEG = (int)-106;
@@ -236,9 +246,11 @@ interface PigpioLibrary
 	int PI_BAD_SER_OFFSET = (int)-49;
 	int PI_SER_OPEN_FAILED = (int)-72;
 	int PI_MAX_WDOG_TIMEOUT = (int)60000;
+	int PI_CFG_RT_PRIORITY = (int)(1 << 8);
 	int PI_BAD_SCRIPT_CMD = (int)-55;
 	int PI_BAD_TIMETYPE = (int)-11;
 	int PI_MAX_PRIMARY_CHANNEL = (int)14;
+	int FALLING_EDGE = (int)1;
 	int PI_MIN_WAVE_DATABITS = (int)1;
 	int PI_CMD_NOIB = (int)99;
 	int PI_I2C_READ_FAILED = (int)-83;
@@ -271,6 +283,7 @@ interface PigpioLibrary
 	int PI_BAD_VAR_NUM = (int)-56;
 	int PI_NO_MEMORY = (int)-58;
 	int PI_I2C_ESC = (int)1;
+	int PI_CMD_CSI = (int)96;
 	int PI_WAVE_MODE_REPEAT = (int)1;
 	int PI_NUM_I2C_BUS = (int)2;
 	int PI_SOCK_READ_FAILED = (int)-59;
@@ -355,6 +368,7 @@ interface PigpioLibrary
 	int PI_HW_PWM_MAX_FREQ = (int)125000000;
 	int PI_CMD_MLT = (int)821;
 	int PI_CMD_LDAB = (int)820;
+	int EITHER_EDGE = (int)2;
 	int PI_CMD_NB = (int)19;
 	int PI_I2C_OPEN_FAILED = (int)-71;
 	int PI_SPI_OPEN_FAILED = (int)-73;
@@ -378,6 +392,7 @@ interface PigpioLibrary
 	int PI_EMPTY_WAVEFORM = (int)-69;
 	int PI_BAD_WVSC_COMMND = (int)-43;
 	int PI_CHAIN_COUNTER = (int)-115;
+	int PI_BAD_ISR_INIT = (int)-123;
 	int PI_CMD_BS2 = (int)15;
 	int PI_CMD_RRA = (int)833;
 	int PI_CMD_BS1 = (int)14;
@@ -399,6 +414,7 @@ interface PigpioLibrary
 	int PI_I2C_SLOTS = (int)32;
 	int PI_MAX_WAVE_DATABITS = (int)32;
 	int PI_MSG_TOOBIG = (int)-103;
+	int PI_CMD_FN = (int)98;
 	int PI_BAD_SERIAL_STRUC = (int)-39;
 	int PI_TOO_MANY_TAGS = (int)-54;
 	int PI_CMD_SPIC = (int)72;
@@ -409,8 +425,10 @@ interface PigpioLibrary
 	int PI_I2C_COMBINED_OFF = (int)3;
 	int PI_BAD_WAVE_MODE = (int)-33;
 	int PI_I2C_M_NOSTART = (int)0x4000;
+	int PI_CMD_FG = (int)97;
 	int PI_I2C_COMBINED_ON = (int)2;
 	int PI_CMD_SPIR = (int)73;
+	int PI_BAD_FILTER = (int)-125;
 	int PI_CMD_SPIW = (int)74;
 	int PI_CMD_SPIX = (int)75;
 	int PI_NOT_HCLK_GPIO = (int)-94;
@@ -442,6 +460,7 @@ interface PigpioLibrary
 	int PI_CMD_SERO = (int)76;
 	int PI_BAD_WVSM_COMMND = (int)-44;
 	int PI_BAD_SERIAL_COUNT = (int)-51;
+	int PI_BAD_FOREVER = (int)-124;
 
 
 	interface gpioAlertFunc_t
@@ -451,6 +470,18 @@ interface PigpioLibrary
 
 
 	interface gpioAlertFuncEx_t
+		extends Callback {
+		void apply(int gpio, int level, int tick, Pointer userdata);
+	}
+
+
+	interface gpioISRFunc_t
+		extends Callback {
+		void apply(int gpio, int level, int tick);
+	}
+
+
+	interface gpioISRFuncEx_t
 		extends Callback {
 		void apply(int gpio, int level, int tick, Pointer userdata);
 	}
@@ -544,6 +575,12 @@ interface PigpioLibrary
 
 
 	int gpioSetAlertFuncEx(int user_gpio, PigpioLibrary.gpioAlertFuncEx_t f, Pointer userdata);
+
+
+	int gpioSetISRFunc(int user_gpio, int edge, int timeout, PigpioLibrary.gpioISRFunc_t f);
+
+
+	int gpioSetISRFuncEx(int user_gpio, int edge, int timeout, PigpioLibrary.gpioISRFuncEx_t f, Pointer userdata);
 
 
 	int gpioNotifyOpen();
@@ -806,6 +843,12 @@ interface PigpioLibrary
 	int gpioSetWatchdog(int user_gpio, int timeout);
 
 
+	int gpioNoiseFilter(int user_gpio, int steady, int active);
+
+
+	int gpioGlitchFilter(int user_gpio, int steady);
+
+
 	int gpioSetGetSamplesFunc(PigpioLibrary.gpioGetSamplesFunc_t f, int bits);
 
 
@@ -818,7 +861,7 @@ interface PigpioLibrary
 	int gpioSetTimerFuncEx(int timer, int millis, PigpioLibrary.gpioTimerFuncEx_t f, Pointer userdata);
 
 
-	PigpioLibrary.pthread_t gpioStartThread(PigpioLibrary.gpioThreadFunc_t f, Pointer arg);
+	PigpioLibrary.pthread_t gpioStartThread(PigpioLibrary.gpioThreadFunc_t f, Pointer userdata);
 
 
 	void gpioStopThread(PigpioLibrary.pthread_t pth);
@@ -928,6 +971,12 @@ interface PigpioLibrary
 
 
 	int gpioCfgInternals(int cfgWhat, int cfgVal);
+
+
+	int gpioCfgGetInternals();
+
+
+	int gpioCfgSetInternals(int cfgVal);
 
 
 	@Deprecated
