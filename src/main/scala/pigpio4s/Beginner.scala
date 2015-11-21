@@ -1,41 +1,46 @@
 package pigpio4s
 
-import pigpio4s.PigpioLibrary.{gpioAlertFunc_t, gpioTimerFunc_t}
-
 /**
  * members of the BEGINNER section as described in pigpio.h
  * https://github.com/joan2937/pigpio/blob/master/pigpio.h
  */
 trait Beginner {
-    def gpioSetMode(gpio: Int, mode: Int): Int
-    def gpioGetMode(gpio: Int): Int
+    def gpioSetMode(gpio: Int, mode: PinMode): Int
+    def gpioGetMode(gpio: Int): PinMode
 
-    def gpioSetPullUpDown(gpio: Int, pud: Int): Int
+    def gpioSetPullUpDown(gpio: Int, pud: GpioPull): Int
     def gpioRead(gpio: Int): Int
     def gpioWrite(gpio: Int, level: Int): Int
-    def gpioPWM(user_gpio: Int, dutycycle: Int): Int
+    def gpioPWM(user_gpio: Int, dutycycle: DutyCycle): Int
+    def gpioGetPWMdutycycle(user_gpio: Int): DutyCycle
 
-    def gpioGetPWMdutycycle(user_gpio: Int): Int
-    def gpioServo(user_gpio: Int, pulsewidth: Int): Int
-    def gpioGetServoPulsewidth(user_gpio: Int): Int
+    def gpioServo(user_gpio: Int, pulsewidth: ServoPulse): Int
+    def gpioGetServoPulsewidth(user_gpio: Int): ServoPulse
 
-    def gpioSetAlertFunc(user_gpio: Int, f: gpioAlertFunc_t): Int
-    def gpioSetTimerFunc(timer: Int, millis: Int, f: gpioTimerFunc_t): Int
+    def gpioSetAlertFunc(user_gpio: Int, f: GpioWatcher): Int
+    def gpioSetTimerFunc(timer: Int, millis: Int, f: TimerWatcher): Int
 }
 
 
 trait DefaultBeginner extends Beginner {
     private val pigpio = PigpioLibrary.INSTANCE
 
-    def gpioSetMode(gpio: Int, mode: Int): Int = pigpio.gpioSetMode(gpio, mode)
-    def gpioSetPullUpDown(gpio: Int, pud: Int): Int = pigpio.gpioSetPullUpDown(gpio, pud)
-    def gpioServo(user_gpio: Int, pulsewidth: Int): Int = pigpio.gpioServo(user_gpio, pulsewidth)
-    def gpioPWM(user_gpio: Int, dutycycle: Int): Int = pigpio.gpioPWM(user_gpio, dutycycle)
-    def gpioSetTimerFunc(timer: Int, millis: Int, f: gpioTimerFunc_t): Int = pigpio.gpioSetTimerFunc(timer, millis, f)
-    def gpioGetPWMdutycycle(user_gpio: Int): Int = pigpio.gpioGetPWMdutycycle(user_gpio)
-    def gpioGetServoPulsewidth(user_gpio: Int): Int = pigpio.gpioGetServoPulsewidth(user_gpio)
-    def gpioWrite(gpio: Int, level: Int): Int = pigpio.gpioWrite(gpio, level)
-    def gpioGetMode(gpio: Int): Int = pigpio.gpioGetMode(gpio)
+    def gpioGetMode(gpio: Int): PinMode = PinMode(pigpio.gpioGetMode(gpio))
+    def gpioSetMode(gpio: Int, mode: PinMode): Int = pigpio.gpioSetMode(gpio, mode.value)
+
+    def gpioSetPullUpDown(gpio: Int, pud: GpioPull): Int = pigpio.gpioSetPullUpDown(gpio, pud.value)
+
+
     def gpioRead(gpio: Int): Int = pigpio.gpioRead(gpio)
-    def gpioSetAlertFunc(user_gpio: Int, f: gpioAlertFunc_t): Int = pigpio.gpioSetAlertFunc(user_gpio, f)
+    def gpioWrite(gpio: Int, level: Int): Int = pigpio.gpioWrite(gpio, level)
+
+
+    def gpioPWM(user_gpio: Int, dutycycle: DutyCycle): Int = pigpio.gpioPWM(user_gpio, dutycycle.value)
+    def gpioGetPWMdutycycle(user_gpio: Int): DutyCycle = DutyCycle(pigpio.gpioGetPWMdutycycle(user_gpio))
+
+    def gpioServo(user_gpio: Int, pulsewidth: ServoPulse): Int = pigpio.gpioServo(user_gpio, pulsewidth.value)
+    def gpioGetServoPulsewidth(user_gpio: Int): ServoPulse = ServoPulse(pigpio.gpioGetServoPulsewidth(user_gpio))
+
+    def gpioSetAlertFunc(user_gpio: Int, f: GpioWatcher): Int = pigpio.gpioSetAlertFunc(user_gpio, f)
+    def gpioSetTimerFunc(timer: Int, millis: Int, f: TimerWatcher): Int = pigpio.gpioSetTimerFunc(timer, millis, f)
 }

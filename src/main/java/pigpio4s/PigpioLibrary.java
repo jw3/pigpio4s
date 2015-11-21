@@ -21,7 +21,7 @@ import pigpio4s.rawWaveInfo_t.ByValue;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 @SuppressWarnings("unused")
-interface PigpioLibrary
+public interface PigpioLibrary
 	extends Library {
 	String JNA_LIBRARY_NAME = "pigpio";
 	NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(PigpioLibrary.JNA_LIBRARY_NAME);
