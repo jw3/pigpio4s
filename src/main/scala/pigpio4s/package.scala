@@ -1,6 +1,9 @@
 import pigpio4s.PigpioLibrary.gpioAlertFunc_t
 import pigpio4s.{PigpioLibrary => lpigpio}
 
+import scala.util.control.NonFatal
+import scala.util.{Failure, Success, Try}
+
 package object pigpio4s {
     type GPIO_t = Int
     type DutyCycle_t = Int
@@ -126,6 +129,13 @@ package object pigpio4s {
             case lpigpio.PI_NOT_SERVO_GPIO => throw NotServoGpio()
             case lpigpio.PI_BAD_MODE => throw BadMode()
             case _ => throw UnknownFailure()
+        }
+    }
+
+    def gpioResultFunction(f: => Int): Try[GpioResult] = {
+        try Success(GpioResult(f))
+        catch {
+            case NonFatal(e) => Failure(e)
         }
     }
 }
