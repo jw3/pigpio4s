@@ -8,8 +8,8 @@ import scala.util.{Failure, Success, Try}
  * https://github.com/joan2937/pigpio/blob/master/pigpio.h
  */
 trait Beginner {
-    def gpioSetMode(gpio: Gpio, mode: PinMode): Try[GpioResult]
     def gpioGetMode(gpio: Gpio): Try[PinMode]
+    def gpioSetMode(gpio: Gpio, mode: PinMode): Try[GpioResult]
 
     def gpioRead(gpio: Gpio): Try[DigitalValue]
     def gpioWrite(gpio: Gpio, level: DigitalValue): Try[GpioResult]
@@ -18,8 +18,8 @@ trait Beginner {
     def gpioPWM(user_gpio: UserGpio, dutycycle: DutyCycle): Try[GpioResult]
     def gpioGetPWMdutycycle(user_gpio: UserGpio): Try[DutyCycle]
 
-    def gpioServo(user_gpio: UserGpio, pulsewidth: ServoPulse): Try[GpioResult]
-    def gpioGetServoPulsewidth(user_gpio: UserGpio): Try[ServoPulse]
+    def gpioServo(user_gpio: UserGpio, pulsewidth: ServoPulseWidth): Try[GpioResult]
+    def gpioGetServoPulsewidth(user_gpio: UserGpio): Try[ServoPulseWidth]
 
     def gpioSetAlertFunc(user_gpio: UserGpio, f: GpioWatcher): Try[GpioResult]
 }
@@ -60,11 +60,11 @@ trait DefaultBeginner extends Beginner {
         }
     }
 
-    def gpioServo(user_gpio: UserGpio, pulsewidth: ServoPulse): Try[GpioResult] =
+    def gpioServo(user_gpio: UserGpio, pulsewidth: ServoPulseWidth): Try[GpioResult] =
         gpioResultFunction(pigpio.gpioServo(user_gpio.value, pulsewidth.value))
 
-    def gpioGetServoPulsewidth(user_gpio: UserGpio): Try[ServoPulse] = {
-        try Success(ServoPulse(pigpio.gpioGetServoPulsewidth(user_gpio.value)))
+    def gpioGetServoPulsewidth(user_gpio: UserGpio): Try[ServoPulseWidth] = {
+        try Success(ServoPulseWidth(pigpio.gpioGetServoPulsewidth(user_gpio.value)))
         catch {
             case NonFatal(e) => Failure(e)
         }
