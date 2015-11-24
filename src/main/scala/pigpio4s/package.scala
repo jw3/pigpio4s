@@ -1,5 +1,3 @@
-import pigpio4s.{PigpioLibrary => lpigpio}
-
 import scala.util.control.NonFatal
 import scala.util.{Failure, Success, Try}
 
@@ -10,9 +8,4 @@ package object pigpio4s {
             case NonFatal(e) => Failure(e)
         }
     }
-
-
-
-
-
 }

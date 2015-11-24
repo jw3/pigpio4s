@@ -7,12 +7,24 @@ sealed trait DutyCycle {
 }
 
 object DutyCycle {
-    val range = Range(lib.PI_MIN_DUTYCYCLE_RANGE, lib.PI_MAX_DUTYCYCLE_RANGE)
-    val default = DutyCycle(lib.PI_DEFAULT_DUTYCYCLE_RANGE)
-
-    def apply(): DutyCycle = default
-    def apply(dc: Int): DutyCycle = {
-        require(range.contains(dc), "out of range")
+    def apply(dc: Int, range: DutyCycleRange = DutyCycleRange.default): DutyCycle = {
+        if (!range.value.contains(dc)) throw new BadDutyCycle()
         new DutyCycle {val value = dc}
+    }
+}
+
+
+sealed trait DutyCycleRange {
+    def value: Range
+}
+
+object DutyCycleRange {
+    val bounds = Range(lib.PI_MIN_DUTYCYCLE_RANGE, lib.PI_MAX_DUTYCYCLE_RANGE)
+    val default = DutyCycleRange(lib.PI_DEFAULT_DUTYCYCLE_RANGE)
+
+    def apply(): DutyCycleRange = default
+    def apply(upper: Int) = {
+        if (!bounds.contains(upper)) throw BadDutyCycleRange()
+        new DutyCycleRange {val value = Range(bounds.min, upper + 1)}
     }
 }

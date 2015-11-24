@@ -13,6 +13,6 @@ object PinMode {
     def apply(value: Int) = value match {
         case lib.PI_INPUT => InputPin
         case lib.PI_OUTPUT => OutputPin
-        case _ => throw new IllegalArgumentException(s"unsupported mode, $value")
+        case _ => throw BadMode()
     }
 }

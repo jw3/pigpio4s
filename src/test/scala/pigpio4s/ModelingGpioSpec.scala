@@ -5,7 +5,7 @@ import org.scalatest.{Matchers, WordSpecLike}
 /**
  *
  */
-class GpioModelingSpec extends WordSpecLike with Matchers {
+class ModelingGpioSpec extends WordSpecLike with Matchers {
     "gpios" should {
         "be equal when same in" in {Gpio(0) shouldEqual Gpio(0)}
         "throw when lt zero" in {intercept[IllegalArgumentException](Gpio(-1))}

@@ -15,6 +15,6 @@ object GpioPull {
         case lib.PI_PUD_UP => PullUp
         case lib.PI_PUD_DOWN => PullDown
         case lib.PI_PUD_OFF => DontPull
-        case _ => throw new IllegalArgumentException(s"unsupported pull, $value")
+        case _ => throw BadPull()
     }
 }

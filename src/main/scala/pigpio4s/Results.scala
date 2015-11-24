@@ -15,6 +15,10 @@ case class BadExGpio() extends BadGpio
 case class NotServoGpio() extends GpioFailure
 case class BadMode() extends GpioFailure
 case class BadLevel() extends GpioFailure
+case class BadDutyCycle() extends GpioFailure
+case class BadDutyCycleRange() extends GpioFailure
+case class BadPull() extends GpioFailure
+case class BadPulseWidth() extends GpioFailure
 
 object GpioResult {
     def apply(code: Int) = code match {
@@ -23,6 +27,9 @@ object GpioResult {
         case lib.PI_BAD_GPIO => throw BadExGpio()
         case lib.PI_NOT_SERVO_GPIO => throw NotServoGpio()
         case lib.PI_BAD_MODE => throw BadMode()
+        case lib.PI_BAD_DUTYCYCLE => BadDutyCycle()
+        case lib.PI_BAD_PUD => BadPull()
+        case lib.PI_BAD_PULSEWIDTH => BadPulseWidth()
         case _ => throw UnknownFailure()
     }
 }
