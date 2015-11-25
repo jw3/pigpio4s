@@ -26,7 +26,7 @@ trait Beginner {
 
 
 trait DefaultBeginner extends Beginner {
-    private val pigpio = PigpioLibrary.INSTANCE
+    def pigpio: PigpioLibrary
 
     def gpioGetMode(gpio: Gpio): Try[PinMode] = {
         try Success(PinMode(pigpio.gpioGetMode(gpio.value)))

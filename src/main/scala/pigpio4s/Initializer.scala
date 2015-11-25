@@ -9,7 +9,7 @@ trait Initializer {
 }
 
 trait DefaultInitializer extends Initializer {
-    private val pigpio = PigpioLibrary.INSTANCE
+    private val pigpio = PigpioLibrary.Instance
 
     def gpioInitialise(): Int = pigpio.gpioInitialise()
     def gpioTerminate(): Unit = pigpio.gpioTerminate()
