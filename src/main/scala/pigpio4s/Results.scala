@@ -2,6 +2,17 @@ package pigpio4s
 
 import pigpio4s.{PigpioLibrary => lib}
 
+sealed trait InitResult
+case class InitOK private[pigpio4s](ver: Int) extends InitResult
+case object InitFailed extends InitResult
+case object UnknownInitFailure extends InitResult
+
+object InitResult {
+    def apply(code: Int) = code match {
+        case lib.PI_INIT_FAILED => InitFailed
+        case ver: Int => InitOK(ver)
+    }
+}
 
 sealed trait GpioResult
 case object OK extends GpioResult
