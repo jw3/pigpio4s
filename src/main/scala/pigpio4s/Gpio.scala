@@ -55,6 +55,6 @@ object Gpio {
 
 
     object Implicits {
-        implicit def int2gpio(int: Int): Gpio = Gpio(int)
+        implicit def int2gpio(int: Int): UserGpio = Gpio(int)
     }
 }
