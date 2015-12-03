@@ -1,23 +1,16 @@
-organization := "wiii"
+enablePlugins(GitVersioning)
 
-name := "pigpio4s"
+import sbt.Keys._
+import sbt._
 
-version := "0.1-SNAPSHOT"
+git.baseVersion := "0.1"
+git.useGitDescribe := true
 
-licenses +=("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
+lazy val core = (project in file("pigpio4s-core"))
+                .settings(Common.settings: _*)
+                .settings(libraryDependencies ++= Dependencies.commonDependencies)
 
-scalaVersion := "2.11.7"
-
-scalacOptions += "-target:jvm-1.8"
-
-resolvers += "jw3 at bintray" at "https://dl.bintray.com/jw3/maven"
-
-libraryDependencies ++= {
-    Seq(
-        "net.java.dev.jna" % "jna" % "4.2.1",
-        "com.nativelibs4java" % "jnaerator-runtime" % "0.12",
-
-        "org.scalatest" %% "scalatest" % "2.2.5" % Test,
-        "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % Test
-    )
-}
+lazy val examples = (project in file("pigpio4s-examples"))
+                    .dependsOn(core)
+                    .settings(Common.settings: _*)
+                    .settings(libraryDependencies ++= Dependencies.commonDependencies)
