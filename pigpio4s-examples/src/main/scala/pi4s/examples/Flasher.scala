@@ -19,19 +19,13 @@ object Flasher extends App {
             System.exit(1)
     }
 
-    IO.gpioSetMode(1, OutputPin)
+    DefaultDigitalIO.gpioSetMode(1, OutputPin)
 
     for (i <- 1 to 100) {
-        IO.gpioWrite(1, High)
+        DefaultDigitalIO.gpioWrite(1, High)
         Thread.sleep(250)
-        IO.gpioWrite(1, Low)
+        DefaultDigitalIO.gpioWrite(1, Low)
         Thread.sleep(250)
     }
-    IO.gpioWrite(1, Low)
+    DefaultDigitalIO.gpioWrite(1, Low)
 }
-
-// revisit;; huh?
-object IO extends DefaultBeginner {
-    def pigpio: PigpioLibrary = PigpioLibrary.Instance
-}
-
