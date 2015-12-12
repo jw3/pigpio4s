@@ -6,10 +6,10 @@ sealed trait BaudRate {
 }
 
 object BaudRate {
-    val validRates = Range(50, 250000)
+    val range = Range(50, 250000)
 
     def apply(rate: Int): Unit = {
-        if (!validRates.contains(rate)) throw BadBaudRate()
+        if (!range.contains(rate)) throw BadBaudRate()
         new BaudRate() {val value = rate}
     }
 }
