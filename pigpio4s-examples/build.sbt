@@ -1,4 +1,4 @@
-name := Pi4sBuild.NamePrefix + "examples"
+name := PiGpio4sBuild.NamePrefix + "examples"
 
 mainClass in assembly := Option("pi4s.examples.Driver")
 

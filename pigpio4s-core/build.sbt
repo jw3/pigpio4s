@@ -1,1 +1,1 @@
-name := Pi4sBuild.NamePrefix + "core"
+name := PiGpio4sBuild.NamePrefix + "core"
