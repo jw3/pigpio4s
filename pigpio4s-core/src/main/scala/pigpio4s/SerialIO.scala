@@ -1,11 +1,12 @@
 package pigpio4s
 
 import com.ochafik.lang.jnaerator.runtime.NativeSize
-import com.sun.jna.Pointer
+import com.sun.jna.Memory
 import pigpio4s.{PigpioLibrary => lib}
 
-import scala.util.control.NonFatal
-import scala.util.{Failure, Success, Try}
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.util.Try
 
 /**
  *
@@ -16,7 +17,7 @@ trait SerialIO {
     def gpioSerialReadClose(user_gpio: UserGpio): Try[GpioResult]
 
     // buf and bufSize should be hidden, and a data stream is made available
-    def gpioSerialRead(user_gpio: UserGpio, buf: Pointer, bufSize: NativeSize): Try[SerialReadResult]
+    def gpioSerialRead(user_gpio: UserGpio, sz: Int = 1024)(fn: String => Unit): Future[SerialReadResult]
 }
 
 object DefaultSerialIO extends DefaultSerialIO
@@ -33,18 +34,20 @@ trait DefaultSerialIO {
     def gpioSerialReadClose(user_gpio: UserGpio): Try[GpioResult] =
         gpioResultFunction(pigpio.gpioSerialReadClose(user_gpio.value))
 
-    // revisit;; buf and bufSize should be hidden, and a stream be made available
-    def gpioSerialRead(user_gpio: UserGpio, buf: Pointer, bufSize: NativeSize): Try[SerialReadResult] = {
-        try {
-            pigpio.gpioSerialRead(user_gpio.value, buf, bufSize) match {
-                case sz if sz >= 0 => Success(ReadOK(sz))
-                case lib.PI_BAD_USER_GPIO => Failure(BadUserGpio())
-                case lib.PI_NOT_SERIAL_GPIO => Failure(NotSerialGpio())
-                case ec => Failure(UnknownFailure())
+    def gpioSerialRead(user_gpio: UserGpio, bufsz: Int = 1024)(fn: String => Unit): Future[SerialReadResult] = {
+        require(bufsz > 0, "read size must be gt zero")
+        val size = new NativeSize(bufsz)
+        val buffer = new Memory(size.intValue)
+        Future {
+            // revisit;; not sure if this native call is blocking
+            pigpio.gpioSerialRead(user_gpio.value, buffer, size) match {
+                case sz if sz >= 0 =>
+                    fn(buffer.getString(0))
+                    ReadOK(sz)
+                case lib.PI_BAD_USER_GPIO => throw BadUserGpio()
+                case lib.PI_NOT_SERIAL_GPIO => throw NotSerialGpio()
+                case ec => throw UnknownFailure()
             }
-        }
-        catch {
-            case NonFatal(e) => Failure(e)
         }
     }
 }

@@ -1,9 +1,11 @@
 package pigpio4s
 
+import com.sun.jna.Pointer
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{Matchers, WordSpecLike}
 
-import scala.util.Success
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 /**
  *
@@ -12,8 +14,19 @@ class SerialSpec extends WordSpecLike with Matchers with MockFactory {
     "mocking inputs" should {
         "work" in {
             val lib = mock[PigpioLibrary]
-            (lib.gpioSerialRead _).expects(1, null, null).returning(1)
-            MockSerialIO(lib).gpioSerialRead(UserGpio(1), null, null) shouldBe Success(ReadOK(1))
+            val x = (lib.gpioSerialRead _) expects(*, *, *)
+
+            // revisit;; ideally the param to the onCall impl would be a tuple, however that
+            // overridden fn is not resolving the Product using method is the only one that seems usable
+            x onCall { xx =>
+                xx.productElement(1).asInstanceOf[Pointer].setString(0, "!")
+                1
+            }
+
+            val callback = mockFunction[String, Unit]
+            callback.expects("!")
+
+            Await.result(MockSerialIO(lib).gpioSerialRead(UserGpio(1))(callback), Duration.Inf) shouldBe ReadOK(1)
         }
     }
 }
