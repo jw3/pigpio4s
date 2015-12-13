@@ -8,7 +8,7 @@ sealed trait DutyCycle {
 
 object DutyCycle {
     def apply(dc: Int, range: DutyCycleRange = DutyCycleRange.default): DutyCycle = {
-        if (!range.value.contains(dc)) throw new BadDutyCycle()
+        if (dc != 0 && !range.value.contains(dc)) throw new BadDutyCycle()
         new DutyCycle {val value = dc}
     }
 }
