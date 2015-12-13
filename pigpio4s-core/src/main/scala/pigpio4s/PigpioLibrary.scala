@@ -4,7 +4,6 @@ import java.nio.{ByteBuffer, IntBuffer}
 
 import com.ochafik.lang.jnaerator.runtime.NativeSize
 import com.sun.jna._
-import com.sun.jna.ptr.IntByReference
 import pigpio4s.PigpioLibrary._
 
 trait PigpioLibrary extends Library {
@@ -35,12 +34,10 @@ trait PigpioLibrary extends Library {
     def gpioWaveClear: Int
     def gpioWaveAddNew: Int
     def gpioWaveAddGeneric(numPulses: Int, pulses: gpioPulse_t): Int
-    @deprecated def gpioWaveAddSerial(user_gpio: Int, baud: Int, data_bits: Int, stop_bits: Int, offset: Int, numBytes: Int, str: Pointer): Int
     def gpioWaveAddSerial(user_gpio: Int, baud: Int, data_bits: Int, stop_bits: Int, offset: Int, numBytes: Int, str: ByteBuffer): Int
     def gpioWaveCreate: Int
     def gpioWaveDelete(wave_id: Int): Int
     def gpioWaveTxSend(wave_id: Int, wave_mode: Int): Int
-    @deprecated def gpioWaveChain(buf: Pointer, bufSize: Int): Int
     def gpioWaveChain(buf: ByteBuffer, bufSize: Int): Int
     def gpioWaveTxBusy: Int
     def gpioWaveTxStop: Int
@@ -67,44 +64,29 @@ trait PigpioLibrary extends Library {
     def i2cReadByteData(handle: Int, i2cReg: Int): Int
     def i2cReadWordData(handle: Int, i2cReg: Int): Int
     def i2cProcessCall(handle: Int, i2cReg: Int, wVal: Int): Int
-    @deprecated def i2cWriteBlockData(handle: Int, i2cReg: Int, buf: Pointer, count: Int): Int
     def i2cWriteBlockData(handle: Int, i2cReg: Int, buf: ByteBuffer, count: Int): Int
-    @deprecated def i2cReadBlockData(handle: Int, i2cReg: Int, buf: Pointer): Int
     def i2cReadBlockData(handle: Int, i2cReg: Int, buf: ByteBuffer): Int
-    @deprecated def i2cBlockProcessCall(handle: Int, i2cReg: Int, buf: Pointer, count: Int): Int
     def i2cBlockProcessCall(handle: Int, i2cReg: Int, buf: ByteBuffer, count: Int): Int
-    @deprecated def i2cReadI2CBlockData(handle: Int, i2cReg: Int, buf: Pointer, count: Int): Int
     def i2cReadI2CBlockData(handle: Int, i2cReg: Int, buf: ByteBuffer, count: Int): Int
-    @deprecated def i2cWriteI2CBlockData(handle: Int, i2cReg: Int, buf: Pointer, count: Int): Int
     def i2cWriteI2CBlockData(handle: Int, i2cReg: Int, buf: ByteBuffer, count: Int): Int
-    @deprecated def i2cReadDevice(handle: Int, buf: Pointer, count: Int): Int
     def i2cReadDevice(handle: Int, buf: ByteBuffer, count: Int): Int
-    @deprecated def i2cWriteDevice(handle: Int, buf: Pointer, count: Int): Int
     def i2cWriteDevice(handle: Int, buf: ByteBuffer, count: Int): Int
     def i2cSwitchCombined(setting: Int)
     def i2cSegments(handle: Int, segs: pi_i2c_msg_t, numSegs: Int): Int
-    @deprecated def i2cZip(handle: Int, inBuf: Pointer, inLen: Int, outBuf: Pointer, outLen: Int): Int
     def i2cZip(handle: Int, inBuf: ByteBuffer, inLen: Int, outBuf: ByteBuffer, outLen: Int): Int
     def bbI2COpen(SDA: Int, SCL: Int, baud: Int): Int
     def bbI2CClose(SDA: Int): Int
-    @deprecated def bbI2CZip(SDA: Int, inBuf: Pointer, inLen: Int, outBuf: Pointer, outLen: Int): Int
     def bbI2CZip(SDA: Int, inBuf: ByteBuffer, inLen: Int, outBuf: ByteBuffer, outLen: Int): Int
     def spiOpen(spiChan: Int, baud: Int, spiFlags: Int): Int
     def spiClose(handle: Int): Int
-    @deprecated def spiRead(handle: Int, buf: Pointer, count: Int): Int
     def spiRead(handle: Int, buf: ByteBuffer, count: Int): Int
-    @deprecated def spiWrite(handle: Int, buf: Pointer, count: Int): Int
     def spiWrite(handle: Int, buf: ByteBuffer, count: Int): Int
-    @deprecated def spiXfer(handle: Int, txBuf: Pointer, rxBuf: Pointer, count: Int): Int
     def spiXfer(handle: Int, txBuf: ByteBuffer, rxBuf: ByteBuffer, count: Int): Int
-    @deprecated def serOpen(sertty: Pointer, baud: Int, serFlags: Int): Int
     def serOpen(sertty: ByteBuffer, baud: Int, serFlags: Int): Int
     def serClose(handle: Int): Int
     def serWriteByte(handle: Int, bVal: Int): Int
     def serReadByte(handle: Int): Int
-    @deprecated def serWrite(handle: Int, buf: Pointer, count: Int): Int
     def serWrite(handle: Int, buf: ByteBuffer, count: Int): Int
-    @deprecated def serRead(handle: Int, buf: Pointer, count: Int): Int
     def serRead(handle: Int, buf: ByteBuffer, count: Int): Int
     def serDataAvailable(handle: Int): Int
     def gpioTrigger(user_gpio: Int, pulseLen: Int, level: Int): Int
@@ -117,11 +99,8 @@ trait PigpioLibrary extends Library {
     def gpioSetTimerFuncEx(timer: Int, millis: Int, f: gpioTimerFuncEx_t, userdata: Pointer): Int
     def gpioStartThread(f: gpioThreadFunc_t, userdata: Pointer): pthread_t
     def gpioStopThread(pth: pthread_t)
-    @deprecated def gpioStoreScript(script: Pointer): Int
     def gpioStoreScript(script: ByteBuffer): Int
-    @deprecated def gpioRunScript(script_id: Int, numPar: Int, param: IntByReference): Int
     def gpioRunScript(script_id: Int, numPar: Int, param: IntBuffer): Int
-    @deprecated def gpioScriptStatus(script_id: Int, param: IntByReference): Int
     def gpioScriptStatus(script_id: Int, param: IntBuffer): Int
     def gpioStopScript(script_id: Int): Int
     def gpioDeleteScript(script_id: Int): Int
@@ -135,7 +114,6 @@ trait PigpioLibrary extends Library {
     def gpioWriteBits3253Set(bits: Int): Int
     def gpioHardwareClock(gpio: Int, clkfreq: Int): Int
     def gpioHardwarePWM(gpio: Int, PWMfreq: Int, PWMduty: Int): Int
-    @deprecated def gpioTime(timetype: Int, seconds: IntByReference, micros: IntByReference): Int
     def gpioTime(timetype: Int, seconds: IntBuffer, micros: IntBuffer): Int
     def gpioSleep(timetype: Int, seconds: Int, micros: Int): Int
     def gpioDelay(micros: Int): Int
@@ -153,11 +131,8 @@ trait PigpioLibrary extends Library {
     def gpioCfgInternals(cfgWhat: Int, cfgVal: Int): Int
     def gpioCfgGetInternals: Int
     def gpioCfgSetInternals(cfgVal: Int): Int
-    @deprecated def gpioCustom1(arg1: Int, arg2: Int, argx: Pointer, argc: Int): Int
     def gpioCustom1(arg1: Int, arg2: Int, argx: ByteBuffer, argc: Int): Int
-    @deprecated def gpioCustom2(arg1: Int, argx: Pointer, argc: Int, retBuf: Pointer, retMax: Int): Int
     def gpioCustom2(arg1: Int, argx: ByteBuffer, argc: Int, retBuf: ByteBuffer, retMax: Int): Int
-    @deprecated def rawWaveAddSPI(spi: rawSPI_t, offset: Int, spiSS: Int, buf: Pointer, spiTxBits: Int, spiBitFirst: Int, spiBitLast: Int, spiBits: Int): Int
     def rawWaveAddSPI(spi: rawSPI_t, offset: Int, spiSS: Int, buf: ByteBuffer, spiTxBits: Int, spiBitFirst: Int, spiBitLast: Int, spiBits: Int): Int
     def rawWaveAddGeneric(numPulses: Int, pulses: rawWave_t): Int
     def rawWaveCB: Int
@@ -167,19 +142,12 @@ trait PigpioLibrary extends Library {
     def rawWaveGetIn(pos: Int): Int
     def rawWaveSetIn(pos: Int, lVal: Int)
     def rawWaveInfo(wave_id: Int): rawWaveInfo_t.ByValue
-    @deprecated def getBitInBytes(bitPos: Int, buf: Pointer, numBits: Int): Int
     def getBitInBytes(bitPos: Int, buf: ByteBuffer, numBits: Int): Int
-    @deprecated def putBitInBytes(bitPos: Int, buf: Pointer, bit: Int)
     def putBitInBytes(bitPos: Int, buf: ByteBuffer, bit: Int)
     def timeTime: Double
     def timeSleep(seconds: Double)
     def rawDumpWave(): Unit
     def rawDumpScript(script_id: Int)
-
-    /** Pointer to unknown (opaque) type */
-    class gpioThreadFunc_t(address: Pointer) extends PointerType(address)
-    /** Pointer to unknown (opaque) type */
-    class pthread_t(address: Pointer) extends PointerType(address)
 }
 
 object PigpioLibrary {
@@ -215,6 +183,11 @@ object PigpioLibrary {
     trait gpioGetSamplesFuncEx_t extends Callback {
         def apply(samples: gpioSample_t, numSamples: Int, userdata: Pointer)
     }
+
+    /** Pointer to unknown (opaque) type */
+    class gpioThreadFunc_t(address: Pointer) extends PointerType(address)
+    /** Pointer to unknown (opaque) type */
+    class pthread_t(address: Pointer) extends PointerType(address)
 
     val PI_CMD_PARSE: Int = 48
     val PI_BAD_HPWM_DUTY: Int = -97
