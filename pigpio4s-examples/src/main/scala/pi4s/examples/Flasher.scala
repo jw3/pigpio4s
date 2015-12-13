@@ -18,6 +18,7 @@ object Flasher extends App {
             println("failed")
             System.exit(1)
     }
+    implicit val pigpio = PigpioLibrary.Instance
 
     DefaultDigitalIO.gpioSetMode(1, OutputPin)
 

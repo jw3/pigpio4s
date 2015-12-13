@@ -12,29 +12,28 @@ import scala.util.Try
  *
  */
 trait SerialIO {
-    def gpioSerialReadOpen(user_gpio: UserGpio, baud: BaudRate, data_bits: DataBits): Try[GpioResult]
-    def gpioSerialReadInvert(user_gpio: UserGpio, invert: InvertSerial): Try[GpioResult]
-    def gpioSerialReadClose(user_gpio: UserGpio): Try[GpioResult]
+    def gpioSerialReadOpen(user_gpio: UserGpio, baud: BaudRate, data_bits: DataBits)(implicit pigpio: PigpioLibrary): Try[GpioResult]
+    def gpioSerialReadInvert(user_gpio: UserGpio, invert: InvertSerial)(implicit pigpio: PigpioLibrary): Try[GpioResult]
+    def gpioSerialReadClose(user_gpio: UserGpio)(implicit pigpio: PigpioLibrary): Try[GpioResult]
 
     // buf and bufSize should be hidden, and a data stream is made available
-    def gpioSerialRead(user_gpio: UserGpio, sz: Int = 1024)(fn: String => Unit): Future[SerialReadResult]
+    def gpioSerialRead(user_gpio: UserGpio, sz: Int = 1024)(fn: String => Unit)(implicit pigpio: PigpioLibrary): Future[SerialReadResult]
 }
 
 object DefaultSerialIO extends DefaultSerialIO
 
 trait DefaultSerialIO {
-    def pigpio: PigpioLibrary = PigpioLibrary.Instance
 
-    def gpioSerialReadOpen(user_gpio: UserGpio, baud: BaudRate, data_bits: DataBits): Try[GpioResult] =
+    def gpioSerialReadOpen(user_gpio: UserGpio, baud: BaudRate, data_bits: DataBits)(implicit pigpio: PigpioLibrary): Try[GpioResult] =
         gpioResultFunction(pigpio.gpioSerialReadOpen(user_gpio.value, baud.value, data_bits.value))
 
-    def gpioSerialReadInvert(user_gpio: UserGpio, invert: InvertSerial): Try[GpioResult] =
+    def gpioSerialReadInvert(user_gpio: UserGpio, invert: InvertSerial)(implicit pigpio: PigpioLibrary): Try[GpioResult] =
         gpioResultFunction(pigpio.gpioSerialReadInvert(user_gpio.value, invert.value))
 
-    def gpioSerialReadClose(user_gpio: UserGpio): Try[GpioResult] =
+    def gpioSerialReadClose(user_gpio: UserGpio)(implicit pigpio: PigpioLibrary): Try[GpioResult] =
         gpioResultFunction(pigpio.gpioSerialReadClose(user_gpio.value))
 
-    def gpioSerialRead(user_gpio: UserGpio, bufsz: Int = 1024)(fn: String => Unit): Future[SerialReadResult] = {
+    def gpioSerialRead(user_gpio: UserGpio, bufsz: Int = 1024)(fn: String => Unit)(implicit pigpio: PigpioLibrary): Future[SerialReadResult] = {
         require(bufsz > 0, "read size must be gt zero")
         val size = new NativeSize(bufsz)
         val buffer = new Memory(size.intValue)

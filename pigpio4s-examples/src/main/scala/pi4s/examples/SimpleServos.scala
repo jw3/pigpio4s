@@ -17,6 +17,7 @@ object SimpleServos extends App {
             println("failed")
             System.exit(1)
     }
+    implicit val pigpio = PigpioLibrary.Instance
 
     for (i <- 500 to 2400 by 50) {
         DefaultAnalogIO.gpioServo(1, ServoPulseWidth(i))

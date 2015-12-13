@@ -13,7 +13,7 @@ import scala.concurrent.duration.Duration
 class SerialSpec extends WordSpecLike with Matchers with MockFactory {
     "mocking inputs" should {
         "work" in {
-            val lib = mock[PigpioLibrary]
+            implicit val lib = mock[PigpioLibrary]
             val x = (lib.gpioSerialRead _) expects(*, *, *)
 
             // revisit;; ideally the param to the onCall impl would be a tuple, however that
@@ -26,9 +26,7 @@ class SerialSpec extends WordSpecLike with Matchers with MockFactory {
             val callback = mockFunction[String, Unit]
             callback.expects("!")
 
-            Await.result(MockSerialIO(lib).gpioSerialRead(UserGpio(1))(callback), Duration.Inf) shouldBe ReadOK(1)
+            Await.result(DefaultSerialIO.gpioSerialRead(UserGpio(1))(callback), Duration.Inf) shouldBe ReadOK(1)
         }
     }
 }
-
-case class MockSerialIO(override val pigpio: PigpioLibrary) extends DefaultSerialIO
