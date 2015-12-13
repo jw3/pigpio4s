@@ -7,8 +7,10 @@ sealed trait DutyCycle {
 }
 
 object DutyCycle {
-    def apply(dc: Int, range: DutyCycleRange = DutyCycleRange.default): DutyCycle = {
-        if (dc != 0 && !range.value.contains(dc)) throw new BadDutyCycle()
+    def apply(dc: Int): DutyCycle = {
+        // revisit;; the max value here needs validated against a global property which is set with gpioSetPWMrange
+        // revisit;; there is no great way to access that setting from this point so this only be partial valiation
+        if (dc != 0 && dc < lib.PI_MIN_DUTYCYCLE_RANGE || dc > lib.PI_MAX_DUTYCYCLE_RANGE) throw new BadDutyCycle()
         new DutyCycle {val value = dc}
     }
 }
