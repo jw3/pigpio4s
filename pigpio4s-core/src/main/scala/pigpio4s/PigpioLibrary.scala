@@ -154,16 +154,16 @@ object PigpioLibrary {
     lazy val Instance = Native.loadLibrary("pigpio", classOf[PigpioLibrary]).asInstanceOf[PigpioLibrary]
 
     trait gpioAlertFunc_t extends Callback {
-        def apply(gpio: Int, level: Int, tick: Int)
+        def apply(gpio: Int, level: Int, tick: Long)
     }
     trait gpioAlertFuncEx_t extends Callback {
-        def apply(gpio: Int, level: Int, tick: Int, userdata: Pointer)
+        def apply(gpio: Int, level: Int, tick: Long, userdata: Pointer)
     }
     trait gpioISRFunc_t extends Callback {
-        def apply(gpio: Int, level: Int, tick: Int)
+        def apply(gpio: Int, level: Int, tick: Long)
     }
     trait gpioISRFuncEx_t extends Callback {
-        def apply(gpio: Int, level: Int, tick: Int, userdata: Pointer)
+        def apply(gpio: Int, level: Int, tick: Long, userdata: Pointer)
     }
     trait gpioTimerFunc_t extends Callback {
         def apply()
