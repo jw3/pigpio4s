@@ -11,7 +11,7 @@ import java.util.List;
 public class gpioReport_t extends Structure {
 	public short seqno;
 	public short flags;
-	public long tick;
+	public int tick;
 	public int level;
 	public gpioReport_t() {
 		super();
@@ -19,7 +19,7 @@ public class gpioReport_t extends Structure {
 	protected List<? > getFieldOrder() {
 		return Arrays.asList("seqno", "flags", "tick", "level");
 	}
-	public gpioReport_t(short seqno, short flags, long tick, int level) {
+	public gpioReport_t(short seqno, short flags, int tick, int level) {
 		super();
 		this.seqno = seqno;
 		this.flags = flags;

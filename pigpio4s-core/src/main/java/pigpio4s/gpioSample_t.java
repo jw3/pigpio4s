@@ -9,7 +9,7 @@ import java.util.List;
  * For help, please visit <a href="http://nativelibs4java.googlecode.com/">NativeLibs4Java</a> , <a href="http://rococoa.dev.java.net/">Rococoa</a>, or <a href="http://jna.dev.java.net/">JNA</a>.
  */
 public class gpioSample_t extends Structure {
-	public long tick;
+	public int tick;
 	public int level;
 	public gpioSample_t() {
 		super();
@@ -17,7 +17,7 @@ public class gpioSample_t extends Structure {
 	protected List<? > getFieldOrder() {
 		return Arrays.asList("tick", "level");
 	}
-	public gpioSample_t(long tick, int level) {
+	public gpioSample_t(int tick, int level) {
 		super();
 		this.tick = tick;
 		this.level = level;
