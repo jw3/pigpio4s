@@ -2,6 +2,8 @@ package pigpio4s
 
 import pigpio4s.PigpioLibrary.gpioAlertFunc_t
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.util.control.NonFatal
 
 
@@ -12,9 +14,11 @@ trait GpioWatcher extends gpioAlertFunc_t {
     def onFailure(t: Throwable): Unit = {}
 
     final def callback(gpio: Int, level: Int, tick: Int /*UINT32*/): Unit = {
-        try onSuccess(GpioAlert(Gpio(gpio), Level(level), Ticks.asUint(tick)))
-        catch {
-            case NonFatal(e) => onFailure(e)
+        Future {
+            try onSuccess(GpioAlert(Gpio(gpio), Level(level), Ticks.asUint(tick)))
+            catch {
+                case NonFatal(e) => onFailure(e)
+            }
         }
     }
 }
