@@ -2,6 +2,7 @@ package rxgpio.examples
 
 import rxgpio._
 
+import scala.concurrent.duration.DurationInt
 import scala.io.StdIn
 import scala.util.Success
 
@@ -22,7 +23,7 @@ object ButtonPushed extends App {
     implicit val pigpio = PigpioLibrary.Instance
 
     DefaultDigitalIO.gpioSetMode(1, InputPin)
-    RxGpio(1).map(_.tick).subscribe(tick => println(s"alert @ tick(${tick})"))
+    RxGpio(1).debounce(100 milliseconds).map(_.tick).subscribe(tick => println(s"alert @ tick($tick)"))
 
     println("Press Enter to exit")
     StdIn.readLine()
