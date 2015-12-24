@@ -117,7 +117,7 @@ trait PigpioLibrary extends Library {
     def gpioTime(timetype: Int, seconds: IntBuffer, micros: IntBuffer): Int
     def gpioSleep(timetype: Int, seconds: Int, micros: Int): Int
     def gpioDelay(micros: Int): Int
-    def gpioTick: Int /*UINT32*/
+    def gpioTick: /*UINT32*/ Int
     def gpioHardwareRevision: Int
     def gpioVersion: Int
     def gpioCfgBufferSize(cfgMillis: Int): Int
@@ -157,13 +157,13 @@ object PigpioLibrary {
         def callback(gpio: Int, level: Int, tick: Int /*UINT32*/)
     }
     trait gpioAlertFuncEx_t extends Callback {
-        def apply(gpio: Int, level: Int, tick: Int /*UINT32*/, userdata: Pointer)
+        def apply(gpio: Int, level: Int, tick: Int /*UINT32*/ , userdata: Pointer)
     }
     trait gpioISRFunc_t extends Callback {
         def apply(gpio: Int, level: Int, tick: Int /*UINT32*/)
     }
     trait gpioISRFuncEx_t extends Callback {
-        def apply(gpio: Int, level: Int, tick: Int /*UINT32*/, userdata: Pointer)
+        def apply(gpio: Int, level: Int, tick: Int /*UINT32*/ , userdata: Pointer)
     }
     trait gpioTimerFunc_t extends Callback {
         def apply()
