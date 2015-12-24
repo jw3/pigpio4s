@@ -3,7 +3,7 @@ package pi4s.examples
 import pigpio4s._
 
 import scala.io.StdIn
-import scala.util.{Failure, Success}
+import scala.util.Success
 
 /**
  *
@@ -14,6 +14,7 @@ object ButtonPushed extends App {
     DefaultInitializer.gpioInitialise() match {
         case Success(InitOK(ver)) =>
             println(s"initialized pigpio:$ver")
+            RxGpio.install(1, PigpioLibrary.Instance.gpioSetAlertFunc)
         case _ =>
             println("failed")
             System.exit(1)
@@ -21,15 +22,8 @@ object ButtonPushed extends App {
     implicit val pigpio = PigpioLibrary.Instance
 
     DefaultDigitalIO.gpioSetMode(1, InputPin)
-    DefaultDigitalIO.gpioSetAlertFunc(1, new Watcher) match {
-        case Success(x) => println("added watch func")
-        case Failure(x) => println(s"watch add failure. $x")
-    }
+    RxGpio(1).map(_.tick).subscribe(tick => println(s"alert @ tick(${tick})"))
 
     println("Press Enter to exit")
     StdIn.readLine()
-}
-
-class Watcher extends GpioWatcher {
-    def onSuccess(alert: GpioAlert): Unit = println(s"alert @ tick(${alert.tick})")
 }

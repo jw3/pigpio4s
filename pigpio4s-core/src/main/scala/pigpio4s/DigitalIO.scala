@@ -14,7 +14,6 @@ trait DigitalIO {
     def gpioWrite(gpio: Gpio, level: Level)(implicit pigpio: PigpioLibrary): Try[GpioResult]
 
     def gpioSetPullUpDown(gpio: Gpio, pud: GpioPull)(implicit pigpio: PigpioLibrary): Try[GpioResult]
-    def gpioSetAlertFunc(user_gpio: UserGpio, f: GpioWatcher)(implicit pigpio: PigpioLibrary): Try[GpioResult]
 }
 
 object DefaultDigitalIO extends DefaultDigitalIO
@@ -40,7 +39,4 @@ trait DefaultDigitalIO extends DigitalIO {
     }
     def gpioWrite(gpio: Gpio, level: Level)(implicit pigpio: PigpioLibrary): Try[GpioResult] =
         gpioResultFunction(pigpio.gpioWrite(gpio.value, level.value))
-
-    def gpioSetAlertFunc(user_gpio: UserGpio, f: GpioWatcher)(implicit pigpio: PigpioLibrary): Try[GpioResult] =
-        gpioResultFunction(pigpio.gpioSetAlertFunc(user_gpio.value, f))
 }

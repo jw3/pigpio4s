@@ -1,24 +1,36 @@
 package pigpio4s
 
 import pigpio4s.PigpioLibrary.gpioAlertFunc_t
+import rx.lang.scala.Observable
+import rx.lang.scala.subjects.PublishSubject
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.util.control.NonFatal
 
 
 case class GpioAlert(gpio: Gpio, level: Level, tick: Long)
 
-trait GpioWatcher extends gpioAlertFunc_t {
-    def onSuccess(alert: GpioAlert): Unit
-    def onFailure(t: Throwable): Unit = {}
+sealed trait RxGpio extends gpioAlertFunc_t {
+    private[pigpio4s] val subject = PublishSubject[GpioAlert]
 
     final def callback(gpio: Int, level: Int, tick: Int /*UINT32*/): Unit = {
-        Future {
-            try onSuccess(GpioAlert(Gpio(gpio), Level(level), Ticks.asUint(tick)))
-            catch {
-                case NonFatal(e) => onFailure(e)
-            }
+        try subject.onNext(GpioAlert(Gpio(gpio), Level(level), Ticks.asUint(tick)))
+        catch {
+            case NonFatal(e) => subject.onError(e)
         }
     }
 }
+
+object RxGpio {
+    private val map: Map[Int, RxGpio] = (for (i <- 0 to 10) yield {i -> new RxGpio {}}).toMap
+
+    def install(num: Int, fn: (Int, gpioAlertFunc_t) => Int) = {
+        require(map.contains(num), s"unsupported pin, $num")
+        fn(num, map(num))
+    }
+
+    def apply(num: Int): Observable[GpioAlert] = {
+        require(map.contains(num), s"unsupported pin, $num")
+        Observable(o => map(num).subject.subscribe(o))
+    }
+}
+
