@@ -2,7 +2,7 @@ package rxgpio
 
 import com.ochafik.lang.jnaerator.runtime.NativeSize
 import com.sun.jna.Memory
-import rxgpio.{PigpioLibrary => lib}
+import rxgpio.pigpio.PigpioLibrary
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -43,8 +43,8 @@ trait DefaultSerialIO {
                 case sz if sz >= 0 =>
                     fn(buffer.getString(0))
                     ReadOK(sz)
-                case lib.PI_BAD_USER_GPIO => throw BadUserGpio()
-                case lib.PI_NOT_SERIAL_GPIO => throw NotSerialGpio()
+                case PigpioLibrary.PI_BAD_USER_GPIO => throw BadUserGpio()
+                case PigpioLibrary.PI_NOT_SERIAL_GPIO => throw NotSerialGpio()
                 case ec => throw UnknownFailure()
             }
         }

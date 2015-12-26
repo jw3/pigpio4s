@@ -3,6 +3,7 @@ package rxgpio
 import com.sun.jna.Pointer
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{Matchers, WordSpecLike}
+import rxgpio.pigpio.PigpioLibrary
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration

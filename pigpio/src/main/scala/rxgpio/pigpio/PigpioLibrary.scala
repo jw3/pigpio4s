@@ -1,10 +1,10 @@
-package rxgpio
+package rxgpio.pigpio
 
 import java.nio.{ByteBuffer, IntBuffer}
 
 import com.ochafik.lang.jnaerator.runtime.NativeSize
 import com.sun.jna._
-import rxgpio.PigpioLibrary._
+import rxgpio.pigpio.PigpioLibrary._
 
 trait PigpioLibrary extends Library {
     def gpioInitialise(): Int

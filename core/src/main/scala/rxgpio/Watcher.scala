@@ -2,7 +2,8 @@ package rxgpio
 
 import rx.lang.scala.Observable
 import rx.lang.scala.subjects.PublishSubject
-import rxgpio.PigpioLibrary.gpioAlertFunc_t
+import rxgpio.pigpio.PigpioLibrary
+import PigpioLibrary.gpioAlertFunc_t
 
 import scala.collection.mutable
 import scala.util.control.NonFatal

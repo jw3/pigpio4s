@@ -1,7 +1,7 @@
 package rxgpio
 
+import rxgpio.pigpio.{PigpioLibrary => lib}
 import org.scalatest.{Matchers, WordSpecLike}
-import rxgpio.{PigpioLibrary => lib}
 
 /**
  *

@@ -1,6 +1,6 @@
 package rxgpio
 
-import rxgpio.{PigpioLibrary => pi}
+import rxgpio.pigpio.{PigpioLibrary => lib}
 
 /**
  * GPIO
@@ -39,8 +39,8 @@ case class UserGpio private[rxgpio](value: Int) extends Gpio
 case class ExtGpio private[rxgpio](value: Int) extends Gpio
 
 object Gpio {
-    val userPins = Range(0, pi.PI_MAX_USER_GPIO)
-    val extPins = Range(0, pi.PI_MAX_GPIO)
+    val userPins = Range(0, lib.PI_MAX_USER_GPIO)
+    val extPins = Range(0, lib.PI_MAX_GPIO)
 
     // default behavior of Gpio is user-gpios
     def apply(num: Int): UserGpio = {

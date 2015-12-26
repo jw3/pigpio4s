@@ -1,6 +1,6 @@
 package rxgpio
 
-import rxgpio.{PigpioLibrary => lib}
+import rxgpio.pigpio.{PigpioLibrary => lib}
 
 sealed trait GpioPull {
     def value: Int

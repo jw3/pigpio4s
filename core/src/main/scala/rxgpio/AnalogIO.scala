@@ -1,5 +1,7 @@
 package rxgpio
 
+import rxgpio.pigpio.PigpioLibrary
+
 import scala.util.control.NonFatal
 import scala.util.{Failure, Success, Try}
 

@@ -1,6 +1,7 @@
 package rxgpio.examples
 
 import rxgpio._
+import rxgpio.pigpio.PigpioLibrary
 
 import scala.concurrent.duration.DurationInt
 import scala.io.StdIn

@@ -1,6 +1,6 @@
 package rxgpio
 
-import rxgpio.{PigpioLibrary => lib}
+import rxgpio.pigpio.{PigpioLibrary => lib}
 
 sealed trait ServoPulseWidth {
     def value: Int

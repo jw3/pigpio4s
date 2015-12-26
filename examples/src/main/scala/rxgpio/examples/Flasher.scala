@@ -2,6 +2,7 @@ package rxgpio.examples
 
 import rx.lang.scala.Observable
 import rxgpio._
+import rxgpio.pigpio.PigpioLibrary
 
 import scala.concurrent.duration.DurationInt
 import scala.util.Success

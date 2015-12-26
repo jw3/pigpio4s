@@ -1,5 +1,7 @@
 package rxgpio
 
+import rxgpio.pigpio.PigpioLibrary
+
 
 sealed trait BaudRate {
     def value: Int

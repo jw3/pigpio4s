@@ -1,6 +1,7 @@
 package rxgpio.examples
 
 import rxgpio._
+import rxgpio.pigpio.PigpioLibrary
 
 import scala.util.Success
 
