@@ -1,6 +1,6 @@
 RxGpio
 ==========================
-[![Build Status](https://travis-ci.org/jw3/pigpio4s.svg?branch=master)](https://travis-ci.org/jw3/pigpio4s)
+[![Build Status](https://travis-ci.org/jw3/rxgpio.svg?branch=master)](https://travis-ci.org/jw3/rxgpio)
 
 ## Goals
 - Be Reactive
@@ -8,7 +8,7 @@ RxGpio
 - Be Case Class based
 - Be Deeply Structured
 
-## See these:
+## Giants:
 - [pigpio](https://github.com/joan2937/pigpio) ([www](http://abyz.co.uk/rpi/pigpio/))
 - [JNAerator](https://github.com/nativelibs4java/JNAerator)
 - [RxScala](https://github.com/ReactiveX/RxScala)
