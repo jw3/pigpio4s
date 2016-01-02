@@ -3,9 +3,8 @@ package rxgpio.akka
 import akka.actor._
 import com.typesafe.config.Config
 import gpio4s.gpiocfg.CfgIO._
+import rx.lang.scala.subjects.PublishSubject
 import rxgpio.akka.Device.{DeviceInstallFailed, DeviceInstalled, InstallDevice}
-
-import scala.collection.mutable
 
 
 /**
@@ -15,19 +14,17 @@ class GpioService(m: GpioInfo, pp: PinProducer = DefaultPinProducer) extends Act
     import GpioService._
 
     val gpios: PinAllocation = produceGpios(m, pp)
-    val subscribers: SubscriberList = subscriberList()
+    val subscribers = PublishSubject[DigitalEvent]
 
 
     //!\\ do not forward events - outsiders cannot touch PinRefs //!\\
     def receive: Actor.Receive = {
         case Configure(c) => configure(gpios, c)
-
-        case Subscribe(p) => subscribers.addBinding(p, sender())
-        case Unsubscribe(p) => subscribers.removeBinding(p, sender())
+        case Subscribe(p) => sender() ! subscribers.subscribe(sender() ! _)
 
         case m @ DigitalRead(p) => gpios(p) ! m
         case m @ DigitalWrite(p, _) => gpios(p) ! m
-        case e @ DigitalEvent(p, v) => subscribers(p).foreach(_ ! e)
+        case e @ DigitalEvent(p, v) => subscribers.onNext(e)
 
         case m @ InstallDevice(info) => sender() ! installDevice(info)
 
@@ -56,7 +53,4 @@ object GpioService {
 
     def produceGpios(model: GpioInfo, pp: PinProducer)(implicit ctx: ActorContext): PinAllocation = model.pins.map(p => p -> pp.get(p)).toMap
     def configure(gpios: PinAllocation, conf: Config, reset: Boolean = false) = conf.pins().foreach(p => gpios(p.num) ! Setup(p))
-
-    private type SubscriberList = mutable.HashMap[Int, mutable.Set[PinRef]] with mutable.MultiMap[Int, PinRef]
-    private def subscriberList() = new mutable.HashMap[Int, mutable.Set[PinRef]] with mutable.MultiMap[Int, PinRef]
 }

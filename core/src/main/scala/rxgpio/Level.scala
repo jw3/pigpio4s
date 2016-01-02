@@ -5,6 +5,8 @@ package rxgpio
  */
 trait Level {
     def value: Int
+
+    def toBoolean: Boolean = value != 0
 }
 
 case object High extends Level {val value = 1}
