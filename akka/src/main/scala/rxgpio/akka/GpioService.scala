@@ -2,8 +2,8 @@ package rxgpio.akka
 
 import akka.actor._
 import com.typesafe.config.Config
-import rxgpio.akka.Device.{InstallDevice, DeviceInstallFailed, DeviceInstalled}
 import gpio4s.gpiocfg.CfgIO._
+import rxgpio.akka.Device.{DeviceInstallFailed, DeviceInstalled, InstallDevice}
 
 import scala.collection.mutable
 
@@ -11,7 +11,7 @@ import scala.collection.mutable
 /**
  * Service as an interface to GPIO
  */
-class GpioService(m: GpioInfo, pp: PinProducer) extends Actor {
+class GpioService(m: GpioInfo, pp: PinProducer = DefaultPinProducer) extends Actor {
     import GpioService._
 
     val gpios: PinAllocation = produceGpios(m, pp)

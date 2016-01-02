@@ -5,6 +5,7 @@ object Dependencies {
         "org.scala-lang" % "scala-library" % "2.11.7",
         "org.scala-lang" % "scala-reflect" % "2.11.7",
 
+        "wiii" %% "akka-injects" % "0.1",
         "gpio4s" %% "gpiocfg" % "0.1",
         "io.reactivex" %% "rxscala" % "0.25.0",
 

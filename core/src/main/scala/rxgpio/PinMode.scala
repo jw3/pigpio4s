@@ -16,3 +16,8 @@ object PinMode {
         case _ => throw BadMode()
     }
 }
+
+object PinModes {
+    val input = InputPin
+    val output = OutputPin
+}
