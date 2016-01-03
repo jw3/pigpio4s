@@ -1,4 +1,4 @@
-RxGpio
+Reactive GPIO (RxGpio)
 ==========================
 [![Build Status](https://travis-ci.org/jw3/rxgpio.svg?branch=master)](https://travis-ci.org/jw3/rxgpio)
 
@@ -7,6 +7,7 @@ RxGpio
 - Be Immutable
 - Be Case Class based
 - Be Deeply Structured
+- Be Portable
 
 ## Giants:
 - [pigpio](https://github.com/joan2937/pigpio) ([www](http://abyz.co.uk/rpi/pigpio/))

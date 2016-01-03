@@ -20,7 +20,9 @@ class GpioService(m: GpioInfo, pp: PinProducer = DefaultPinProducer) extends Act
     //!\\ do not forward events - outsiders cannot touch PinRefs //!\\
     def receive: Actor.Receive = {
         case Configure(c) => configure(gpios, c)
-        case Subscribe(p) => sender() ! subscribers.subscribe(sender() ! _)
+        case Subscribe(p) =>
+            val s = sender()
+            s ! subscribers.filter(_.pin == p).subscribe(s ! _)
 
         case m @ DigitalRead(p) => gpios(p) ! m
         case m @ DigitalWrite(p, _) => gpios(p) ! m
