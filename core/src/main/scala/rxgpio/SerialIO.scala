@@ -22,7 +22,7 @@ trait SerialIO {
 
 object DefaultSerialIO extends DefaultSerialIO
 
-trait DefaultSerialIO {
+trait DefaultSerialIO extends SerialIO {
 
     def gpioSerialReadOpen(user_gpio: UserGpio, baud: BaudRate, data_bits: DataBits)(implicit pigpio: PigpioLibrary): Try[GpioResult] =
         gpioResultFunction(pigpio.gpioSerialReadOpen(user_gpio.value, baud.value, data_bits.value))
