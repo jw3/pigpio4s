@@ -10,7 +10,7 @@ sealed trait BaudRate {
 object BaudRate {
     val range = Range(50, 250000)
 
-    def apply(rate: Int): Unit = {
+    def apply(rate: Int): BaudRate = {
         if (!range.contains(rate)) throw BadBaudRate()
         new BaudRate() {val value = rate}
     }
@@ -27,6 +27,15 @@ sealed trait DataBits {
 
 object DataBits {
     val `8` = new DataBits {val value = 8}
+    val `7` = new DataBits {val value = 7}
+}
+
+sealed trait StopBits {
+    def value: Int
+}
+
+object StopBits {
+    val `2` = new StopBits {val value = 2}
 }
 
 sealed trait InvertSerial {
