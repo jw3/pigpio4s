@@ -20,7 +20,12 @@ lazy val akka = (project in file("akka"))
                 .settings(Common.settings: _*)
                 .settings(libraryDependencies ++= Dependencies.commonDependencies)
 
+lazy val devices = (project in file("devices"))
+                .dependsOn(pigpio, core, akka)
+                .settings(Common.settings: _*)
+                .settings(libraryDependencies ++= Dependencies.commonDependencies)
+
 lazy val examples = (project in file("examples"))
-                    .dependsOn(pigpio, core, akka)
+                    .dependsOn(pigpio, core, akka, devices)
                     .settings(Common.settings: _*)
                     .settings(libraryDependencies ++= Dependencies.commonDependencies)
