@@ -6,13 +6,14 @@ import rxgpio.pigpio.PigpioLibrary
 sealed trait BaudRate {
     def value: Int
 }
+private case class DefaultBaudRate(value: Int) extends BaudRate
 
 object BaudRate {
     val range = Range(50, 250000)
 
     def apply(rate: Int): BaudRate = {
         if (!range.contains(rate)) throw BadBaudRate()
-        new BaudRate() {val value = rate}
+        DefaultBaudRate(rate)
     }
 }
 
@@ -24,18 +25,20 @@ object BaudRates {
 sealed trait DataBits {
     def value: Int
 }
+private case class DefaultDataBits(value: Int) extends DataBits
 
 object DataBits {
-    val `8` = new DataBits {val value = 8}
-    val `7` = new DataBits {val value = 7}
+    val `8`: DataBits = DefaultDataBits(8)
+    val `7`: DataBits = DefaultDataBits(7)
 }
 
 sealed trait StopBits {
     def value: Int
 }
+private case class DefaultStopBits(value: Int) extends StopBits
 
 object StopBits {
-    val `2` = new StopBits {val value = 2}
+    val `2`: StopBits = DefaultStopBits(2)
 }
 
 sealed trait InvertSerial {
