@@ -24,5 +24,5 @@ trait DeviceInfo {
     def conf: Config
     def impl: Class[_ <: Device]
 
-    final def props(pins: PinAllocation): Props = Props(impl, id, conf, pins)
+    final def props(pins: PinMap): Props = Props(impl, id, conf, pins)
 }

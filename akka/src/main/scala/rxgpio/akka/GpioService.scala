@@ -13,12 +13,20 @@ import scala.collection.mutable
 
 
 /**
- * Service as an interface to GPIO
+ * GPIO as a Service
  */
+object GpioService {
+    def apply(m: GpioInfo, f: PinProducer)(implicit sys: ActorSystem): ActorRef = sys.actorOf(Props(new GpioService(m, f)))
+
+    def produceGpios(model: GpioInfo, pp: PinProducer)(implicit ctx: ActorContext): PinMap = model.pins.map(p => p -> pp.get(p)).toMap
+    def configure(gpios: PinMap, conf: Config, reset: Boolean = false) = conf.pins().foreach(p => gpios(p.num) ! Setup(p))
+    def random() = UUID.randomUUID.toString
+}
+
 class GpioService(m: GpioInfo, pp: PinProducer = DefaultPinProducer) extends Actor {
     import GpioService._
 
-    val gpios: PinAllocation = produceGpios(m, pp)
+    val gpios: PinMap = produceGpios(m, pp)
     val subscribers = PublishSubject[DigitalEvent]
     val subscriptions = mutable.Map[String, Subscription]()
 
@@ -58,12 +66,4 @@ class GpioService(m: GpioInfo, pp: PinProducer = DefaultPinProducer) extends Act
                 DeviceInstallFailed(info.id, t)
         }
     }
-}
-
-object GpioService {
-    def apply(m: GpioInfo, f: PinProducer)(implicit sys: ActorSystem): ActorRef = sys.actorOf(Props(new GpioService(m, f)))
-
-    def produceGpios(model: GpioInfo, pp: PinProducer)(implicit ctx: ActorContext): PinAllocation = model.pins.map(p => p -> pp.get(p)).toMap
-    def configure(gpios: PinAllocation, conf: Config, reset: Boolean = false) = conf.pins().foreach(p => gpios(p.num) ! Setup(p))
-    def random() = UUID.randomUUID.toString
 }
