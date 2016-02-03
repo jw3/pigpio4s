@@ -16,7 +16,6 @@ object ButtonPushed extends App {
     DefaultInitializer.gpioInitialise() match {
         case Success(InitOK(ver)) =>
             println(s"initialized pigpio:$ver")
-            RxGpio.install(1, PigpioLibrary.Instance.gpioSetAlertFunc)
         case _ =>
             println("failed")
             System.exit(1)
