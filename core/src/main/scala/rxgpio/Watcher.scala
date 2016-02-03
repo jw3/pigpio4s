@@ -27,6 +27,8 @@ object GpioAlert {
 object RxGpio {
     private val rxpins = (0 to PigpioLibrary.PI_MAX_USER_GPIO).map(_ -> new RxGpio).toMap
 
+    def installAll()(implicit pigpio: PigpioLibrary) = rxpins.foreach(t => pigpio.gpioSetAlertFunc(t._1, t._2))
+
     def apply(num: Int): Observable[GpioAlert] = {
         require(rxpins.contains(num), s"invalid pin, $num")
         Observable(o => rxpins(num).subject.subscribe(o))
