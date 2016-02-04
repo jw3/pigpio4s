@@ -10,12 +10,7 @@ trait Level {
 }
 
 case object High extends Level {val value = 1}
-case object On extends Level {val value = 1}
-case object Set extends Level {val value = 1}
-
 case object Low extends Level {val value = 0}
-case object Off extends Level {val value = 0}
-case object Clear extends Level {val value = 0}
 
 object Level {
     def apply(bool: Boolean) = if (bool) High else Low
@@ -28,4 +23,15 @@ object Level {
     object Implicits {
         implicit def bool2level(b: Boolean): Level = Level(b)
     }
+}
+
+object Levels {
+    val high = High
+    val on = high
+
+    val low = Low
+    val off = low
+
+    val set = on
+    val clear = off
 }
