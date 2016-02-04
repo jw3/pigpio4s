@@ -21,7 +21,8 @@ object Dependencies {
             "com.typesafe.akka" %% "akka-stream-experimental" % akkaStreamVersion,
 
             "org.scalatest" %% "scalatest" % "2.2.5" % Test,
-            "com.typesafe.akka" %% "akka-testkit" % "2.4.0" % Test,
+            "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
+            "com.typesafe.akka" %% "akka-stream-testkit-experimental" % akkaStreamVersion % Test,
             "org.scalamock" %% "scalamock-scalatest-support" % "3.2.2" % Test
         )
     }
