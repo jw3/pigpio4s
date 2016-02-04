@@ -35,7 +35,7 @@ class GpioSetupSpec extends TestKit(ActorSystem(getClass.getSimpleName.dropRight
 
             val subs = TestProbe()
             subs.send(pi, Subscribe(0))
-            subs.expectMsgType[Subscription]
+            subs.expectMsgType[String]
 
             val e = DigitalEvent(0, true)
             pi ! e
