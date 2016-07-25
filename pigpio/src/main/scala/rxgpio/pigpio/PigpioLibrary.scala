@@ -1,9 +1,10 @@
 package rxgpio.pigpio
 
-import java.nio.{ByteBuffer, IntBuffer}
+import java.nio.{ByteBuffer}
 
 import com.ochafik.lang.jnaerator.runtime.NativeSize
 import com.sun.jna._
+import com.sun.jna.ptr.IntByReference
 import rxgpio.pigpio.PigpioLibrary._
 
 trait PigpioLibrary extends Library {
@@ -100,8 +101,8 @@ trait PigpioLibrary extends Library {
     def gpioStartThread(f: gpioThreadFunc_t, userdata: Pointer): pthread_t
     def gpioStopThread(pth: pthread_t)
     def gpioStoreScript(script: ByteBuffer): Int
-    def gpioRunScript(script_id: Int, numPar: Int, param: IntBuffer): Int
-    def gpioScriptStatus(script_id: Int, param: IntBuffer): Int
+    def gpioRunScript(script_id: Int, numPar: Int, param: IntByReference): Int
+    def gpioScriptStatus(script_id: Int, param: IntByReference): Int
     def gpioStopScript(script_id: Int): Int
     def gpioDeleteScript(script_id: Int): Int
     def gpioSetSignalFunc(signum: Int, f: gpioSignalFunc_t): Int
@@ -114,7 +115,7 @@ trait PigpioLibrary extends Library {
     def gpioWriteBits3253Set(bits: Int): Int
     def gpioHardwareClock(gpio: Int, clkfreq: Int): Int
     def gpioHardwarePWM(gpio: Int, PWMfreq: Int, PWMduty: Int): Int
-    def gpioTime(timetype: Int, seconds: IntBuffer, micros: IntBuffer): Int
+    def gpioTime(timetype: Int, seconds: IntByReference, micros: IntByReference): Int
     def gpioSleep(timetype: Int, seconds: Int, micros: Int): Int
     def gpioDelay(micros: Int): Int
     def gpioTick: /*UINT32*/ Int
